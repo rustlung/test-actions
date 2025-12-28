@@ -22,6 +22,20 @@ python -m uvicorn main:app --reload --host 127.0.0.1 --port 8000
 - `GET /health` — простой healthcheck
 - Swagger UI: `GET /docs`
 
+### Docker
+
+Сборка:
+
+```bash
+docker build -t time-api .
+```
+
+Запуск:
+
+```bash
+docker run --rm -p 8000:8000 time-api
+```
+
 Пример ответа `GET /time`:
 
 ```json
