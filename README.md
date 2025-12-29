@@ -38,6 +38,12 @@ docker build -t time-api .
 docker run --rm -p 8000:8000 time-api
 ```
 
+### CI/CD (GitHub Actions → GHCR → SSH)
+
+Инструкция по настройке деплоя через GitHub Actions:
+
+- `DEPLOY_GITHUB_ACTIONS.md`
+
 Пример ответа `GET /time`:
 
 ```json
