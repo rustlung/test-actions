@@ -19,6 +19,7 @@ python -m uvicorn main:app --reload --host 127.0.0.1 --port 8000
 ### Проверка
 
 - `GET /time` — текущее время
+- `GET /time/convert?city=London` — текущее время в указанной таймзоне (город или IANA TZ)
 - `GET /date` — текущая дата (локальная таймзона сервера)
 - `GET /date/utc` — текущая дата (UTC)
 - `GET /health` — простой healthcheck
