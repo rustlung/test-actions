@@ -19,6 +19,8 @@ python -m uvicorn main:app --reload --host 127.0.0.1 --port 8000
 ### Проверка
 
 - `GET /time` — текущее время
+- `GET /date` — текущая дата (локальная таймзона сервера)
+- `GET /date/utc` — текущая дата (UTC)
 - `GET /health` — простой healthcheck
 - Swagger UI: `GET /docs`
 
@@ -35,6 +37,12 @@ docker build -t time-api .
 ```bash
 docker run --rm -p 8000:8000 time-api
 ```
+
+### CI/CD (GitHub Actions → GHCR → SSH)
+
+Инструкция по настройке деплоя через GitHub Actions:
+
+- `DEPLOY_GITHUB_ACTIONS.md`
 
 Пример ответа `GET /time`:
 
