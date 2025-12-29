@@ -13,7 +13,8 @@ env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }} # owner/repo
   CONTAINER_NAME: time-api
-  APP_PORT: "8000"
+  HOST_PORT: "8001"
+  CONTAINER_PORT: "8000"
 
 jobs:
   build_and_push:
@@ -66,7 +67,8 @@ jobs:
 
             IMAGE="${{ needs.build_and_push.outputs.image }}"
             CONTAINER="${{ env.CONTAINER_NAME }}"
-            PORT="${{ env.APP_PORT }}"
+            HOST_PORT="${{ env.HOST_PORT }}"
+            CONTAINER_PORT="${{ env.CONTAINER_PORT }}"
 
             echo "Logging in to GHCR..."
             echo "${{ secrets.GHCR_TOKEN }}" | docker login ghcr.io -u "${{ github.repository_owner }}" --password-stdin
@@ -82,7 +84,7 @@ jobs:
             docker run -d \
               --name "$CONTAINER" \
               --restart unless-stopped \
-              -p "$PORT:$PORT" \
+              -p "$HOST_PORT:$CONTAINER_PORT" \
               "$IMAGE"
 
             echo "Done. Current containers:"
