@@ -69,7 +69,7 @@ jobs:
             PORT="${{ env.APP_PORT }}"
 
             echo "Logging in to GHCR..."
-            echo "${{ secrets.GHCR_TOKEN }}" | docker login ghcr.io -u "${{ secrets.GHCR_USERNAME }}" --password-stdin
+            echo "${{ secrets.GHCR_TOKEN }}" | docker login ghcr.io -u "${{ github.repository_owner }}" --password-stdin
 
             echo "Pulling image: $IMAGE"
             docker pull "$IMAGE"

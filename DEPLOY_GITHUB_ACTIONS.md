@@ -25,11 +25,28 @@
 - **`SSH_PRIVATE_KEY`**: приватный ключ (формат OpenSSH, строка целиком с `-----BEGIN ...`)
 - **`SSH_PASSPHRASE`**: passphrase от приватного ключа (если ключ зашифрован)
 
+#### Частые ошибки с ключом (и как исправить)
+
+- **`ssh.ParsePrivateKey: ssh: no key found`**:
+  - **Причина**: в `SSH_PRIVATE_KEY` лежит **не приватный ключ**, либо он в **неподдерживаемом формате**.
+  - **Проверьте**: содержимое секрета должно начинаться и заканчиваться так (пример):
+    - `-----BEGIN OPENSSH PRIVATE KEY-----` ... `-----END OPENSSH PRIVATE KEY-----`
+    - или `-----BEGIN RSA PRIVATE KEY-----` ... `-----END RSA PRIVATE KEY-----`
+  - **Важно**: строка вида `ssh-ed25519 AAAA...` / `ssh-rsa AAAA...` — это **публичный ключ**, его в `SSH_PRIVATE_KEY` класть нельзя.
+  - **Windows/PuTTY**: если у вас ключ в формате `.ppk`, GitHub Actions/`appleboy/ssh-action` его не прочитает — конвертируйте в OpenSSH:
+
+```bash
+puttygen key.ppk -O private-openssh -o id_deploy
+```
+
+- **`ssh: handshake failed: unable to authenticate, attempted methods [none publickey]`**:
+  - **Причина**: приватный ключ распарсился, но сервер его не принимает (нет соответствующего public key в `~/.ssh/authorized_keys`, неверный `SSH_USER`, права/владение файлов `.ssh`).
+  - **Проверьте на сервере**: публичный ключ (файл `*.pub`) добавлен в `~/.ssh/authorized_keys` пользователя `SSH_USER`.
+
 #### Доступ к GHCR с сервера
 
 Чтобы сервер мог скачивать образы из GHCR, добавьте:
 
-- **`GHCR_USERNAME`**: ваш GitHub username или org (владелец пакета)
 - **`GHCR_TOKEN`**: GitHub PAT токен с правами:
   - **`read:packages`** (обязательно)
   - если пакет приватный и GitHub потребует — добавьте также `repo`
